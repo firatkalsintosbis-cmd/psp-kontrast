@@ -9,8 +9,9 @@ int main_thread(SceSize args, void *argp) {
     while(1) {
         sceCtrlReadBufferPositive(&pad, 1);
         
+        // Eğer L ve R'ye basılırsa
         if((pad.Buttons & PSP_CTRL_LTRIGGER) && (pad.Buttons & PSP_CTRL_RTRIGGER)) {
-            sceDisplaySetBrightness(100, 0); 
+            sceDisplayWaitVblankStart(); 
         }
         
         sceKernelDelayThread(100000);
@@ -25,3 +26,4 @@ int module_start(SceSize args, void *argp) {
 }
 
 int module_stop() { return 0; }
+
