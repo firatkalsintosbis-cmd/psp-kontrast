@@ -1,14 +1,10 @@
 #include <pspkernel.h>
 #include <pspctrl.h>
-// Kernel modunda donanım komutlarını çekmek için özel driver kütüphaneleri kullanılır
 #include <pspdisplay_kernel.h> 
 
-// 0x1000 bayrağı en kritik kısımdır! PSP'ye "Ben sıradan bir eklenti değilim, Çekirdek (Kernel) yetkisi istiyorum" der.
+// Kernel yetkisi devrede
 PSP_MODULE_INFO("ColorSpaceFat", 0x1000, 1, 1);
 PSP_MAIN_THREAD_ATTR(0);
-
-// PSP'nin normalde gizli olan donanımsal parlaklık fonksiyonunu zorla çağırıyoruz
-extern int sceDisplaySetBrightness(int level, int unk1);
 
 int main_thread(SceSize args, void *argp) {
     SceCtrlData pad;
@@ -18,12 +14,11 @@ int main_thread(SceSize args, void *argp) {
         
         // L ve R tuşlarına aynı anda basıldığında...
         if((pad.Buttons & PSP_CTRL_LTRIGGER) && (pad.Buttons & PSP_CTRL_RTRIGGER)) {
-            // Artık Kernel modunda olduğumuz için Sony bizi engelleyemez!
-            // Donanımı sınırlarına (100) zorluyoruz.
+            // Kernel kütüphanesinin resmi donanım komutu çalışır!
             sceDisplaySetBrightness(100, 0); 
         }
         
-        sceKernelDelayThread(100000); // Sistemin kilitlenmemesi için 100ms döngü gecikmesi
+        sceKernelDelayThread(100000); // Sistemin kilitlenmemesi için döngü gecikmesi
     }
     return 0;
 }
