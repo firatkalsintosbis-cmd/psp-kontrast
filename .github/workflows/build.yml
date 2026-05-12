@@ -1,0 +1,21 @@
+name: Build PSP PRX
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: pspdev/pspdev:latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Plugin Derleniyor
+        run: make
+        
+      - name: PRX Dosyasini Yukle
+        uses: actions/upload-artifact@v4
+        with:
+          name: Contrast_Plugin_Hazir
+          path: contrast.prx
+          
