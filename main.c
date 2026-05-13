@@ -1,9 +1,14 @@
+// Pocket Edition Renk Paleti
+#define COLOR_GRASS 0xFF358C4F  // Canlı PE Çimen Yeşili
+#define COLOR_DIRT  0xFF3C5A82  // Toprak Kahverengisi
+#define COLOR_STONE 0xFF808080  // Taş Grisi
+
 #include <pspkernel.h>
 #include <pspdisplay.h>
 #include <pspgu.h>
 #include <pspgum.h>
 #include <pspctrl.h>
-
+#include <psppower.h>
 PSP_MODULE_INFO("MinecraftPE", 0, 1, 1);
 PSP_MAIN_THREAD_ATTR(PSP_THREAD_ATTR_USER);
 
