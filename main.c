@@ -1,32 +1,46 @@
 #include <pspkernel.h>
+#include <pspdisplay.h>
+#include <pspgu.h>
+#include <pspgum.h>
 #include <pspctrl.h>
-#include <pspdisplay_kernel.h> 
 
-// Kernel yetkisi devrede
-PSP_MODULE_INFO("ColorSpaceFat", 0x1000, 1, 1);
-PSP_MAIN_THREAD_ATTR(0);
+PSP_MODULE_INFO("MinecraftPE", 0, 1, 1);
+PSP_MAIN_THREAD_ATTR(PSP_THREAD_ATTR_USER);
 
-int main_thread(SceSize args, void *argp) {
+// Mobil tarzdaki o geniş görüş açısını ayarlıyoruz (FOV)
+float fov = 75.0f; 
+
+void setupGu() {
+    sceGuInit();
+    sceGuStart(GU_DIRECT, list);
+    sceGuDrawBuffer(GU_PSM_8888, (void*)0, 512);
+    sceGuDispBuffer(480, 272, (void*)0x88000, 512);
+    sceGuClearColor(0xFFD8A05E); // Mobil Minecraft gökyüzü rengi (Açık Mavi)
+    sceGuFinish();
+    sceGuDisplay(GU_TRUE);
+}
+
+int main() {
+    setupGu();
     SceCtrlData pad;
-    
+
     while(1) {
         sceCtrlReadBufferPositive(&pad, 1);
         
-        // L ve R tuşlarına aynı anda basıldığında...
-        if((pad.Buttons & PSP_CTRL_LTRIGGER) && (pad.Buttons & PSP_CTRL_RTRIGGER)) {
-            // Kernel kütüphanesinin resmi donanım komutu çalışır!
-            sceDisplaySetBrightness(100, 0); 
-        }
+        sceGuStart(GU_DIRECT, list);
+        sceGuClear(GU_COLOR_BUFFER_BIT);
         
-        sceKernelDelayThread(100000); // Sistemin kilitlenmemesi için döngü gecikmesi
+        // Buraya blok çizim kodları gelecek
+        
+        sceGuFinish();
+        sceGuSync(0,0);
+        sceDisplayWaitVblankStart();
+        sceGuSwapBuffers();
+        
+        if(pad.Buttons & PSP_CTRL_HOME) break;
     }
+
+    sceKernelExitGame();
     return 0;
 }
 
-int module_start(SceSize args, void *argp) {
-    SceUID thid = sceKernelCreateThread("ColorThread", main_thread, 0x18, 0x1000, 0, NULL);
-    if(thid >= 0) sceKernelStartThread(thid, 0, NULL);
-    return 0;
-}
-
-int module_stop() { return 0; }
