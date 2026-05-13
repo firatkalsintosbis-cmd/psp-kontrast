@@ -16,6 +16,6 @@ jobs:
       - name: PRX Dosyasini Yukle
         uses: actions/upload-artifact@v4
         with:
-          name: Contrast_Plugin_Hazir
-          path: colorspace.prx
+          name: minicraft_peHazir
+          path: minicraft_pe.prx
           
