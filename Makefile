@@ -1,12 +1,12 @@
 TARGET = screen_patch
-OBJS = src/main.o # src klasöründeki main.c'yi derler
+# src klasöründeki tüm .c dosyalarını otomatik bulur
+OBJS = $(patsubst %.c, %.o, $(wildcard src/*.c))
 
 INCDIR = 
 CFLAGS = -O2 -G0 -Wall
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
-# Plugin (PRX) ayarları
 BUILD_PRX = 1
 PRX_EXPORTS = exports.exp
 
@@ -15,7 +15,8 @@ USE_KERNEL_LIBS = 1
 
 LIBDIR =
 LDFLAGS = -mno-crt0 -nostartfiles
-LIBS = -lpspdisplay_driver -lpspctrl_driver
+# Kernel kütüphanelerini ekliyoruz
+LIBS = -lpspdisplay_driver -lpspctrl_driver -lpsppower
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build_prx.mak
