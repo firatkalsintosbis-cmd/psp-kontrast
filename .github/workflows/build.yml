@@ -1,21 +1,6 @@
-name: Build PSP PRX
-
-on: [push, workflow_dispatch]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    container: pspdev/pspdev:latest
-    
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Plugin Derleniyor
-        run: make
-        
-      - name: PRX Dosyasini Yukle
+      - name: Plugin Yukle
         uses: actions/upload-artifact@v4
         with:
-          name: minicraft_peHazir
-          path: minicraft_pe.prx
+          name: Kontrast_Plugin_Hazir
+          path: screen_patch.prx
           
