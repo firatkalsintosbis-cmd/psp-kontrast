@@ -1,12 +1,21 @@
-TARGET = minicraft_pe
-OBJS = main.o
+TARGET = screen_patch
+OBJS = src/main.o # src klasöründeki main.c'yi derler
 
+INCDIR = 
+CFLAGS = -O2 -G0 -Wall
+CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
+ASFLAGS = $(CFLAGS)
+
+# Plugin (PRX) ayarları
 BUILD_PRX = 1
-# Oyun olduğu için kullanıcı modunda kalmamız daha stabil olur
-PSP_FW_VERSION = 500 
+PRX_EXPORTS = exports.exp
 
-LIBS = -lpspgum -lpspgu -lpng -lz -lm
+USE_KERNEL_LIBC = 1
+USE_KERNEL_LIBS = 1
+
+LIBDIR =
+LDFLAGS = -mno-crt0 -nostartfiles
+LIBS = -lpspdisplay_driver -lpspctrl_driver
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build_prx.mak
-
