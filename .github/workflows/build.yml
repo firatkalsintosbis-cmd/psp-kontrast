@@ -11,11 +11,13 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Plugin Derleniyor
-        run: make
+        run: |
+          make clean
+          make
 
       - name: PRX Dosyasini Yukle
         uses: actions/upload-artifact@v4
         with:
           name: Kontrast_Plugin_Hazir
-          path: screen_patch.prx
+          path: "*.prx"
           
